@@ -1,2 +1,0 @@
-# surls
-Shortcut URL Service
