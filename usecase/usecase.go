@@ -5,38 +5,38 @@ import (
 	"net/url"
 )
 
-//Usecase is is a container for Interactors
+//Usecase is is a container for Boundarys
 type Usecase struct {
-	GetShortcutInteractor
-	CreateShortcutInteractor
+	GetShortcutBoundary
+	CreateShortcutBoundary
 }
 
-//GetShortcutInteractor is Interactor of GetShortcut
-type GetShortcutInteractor interface {
+//GetShortcutBoundary is Boundary of GetShortcut
+type GetShortcutBoundary interface {
 	GetShortcut(context.Context, *GetShortcutInput) (*GetShortcutOutput, error)
 }
 
-//GetShortcutInput is InputData for GetShortcutInteractor
+//GetShortcutInput is InputData for GetShortcutBoundary
 type GetShortcutInput struct {
 	ShortcutID string `json:"shortcut_id"`
 }
 
-//GetShortcutInput is OutputData for GetShortcutInteractor
+//GetShortcutInput is OutputData for GetShortcutBoundary
 type GetShortcutOutput struct {
 	RedirectURL *url.URL
 }
 
-//CreateShortcutInteractor is Interactor of CreateShortcut
-type CreateShortcutInteractor interface {
+//CreateShortcutBoundary is Boundary of CreateShortcut
+type CreateShortcutBoundary interface {
 	CreateShortcut(context.Context, *CreateShortcutInput) (*CreateShortcutOutput, error)
 }
 
-//CreateShortcutInput is InputData for CreateShortcutInteractor
+//CreateShortcutInput is InputData for CreateShortcutBoundary
 type CreateShortcutInput struct {
 	LongURL string `json:"long_url"`
 }
 
-//CreateShortcutInput is OutputData for CreateShortcutInteractor
+//CreateShortcutInput is OutputData for CreateShortcutBoundary
 type CreateShortcutOutput struct {
 	ShortcutID string
 	LongURL    string

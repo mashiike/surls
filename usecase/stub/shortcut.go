@@ -10,7 +10,7 @@ import (
 //GetShortcutInteractor is stub implementation for usecase.GetShortcutInteractor
 type GetShortcutInteractor struct{}
 
-func NewGetShortcutInteractor() usecase.GetShortcutInteractor {
+func NewGetShortcutInteractor() usecase.GetShortcutBoundary {
 	return &GetShortcutInteractor{}
 }
 
@@ -24,10 +24,10 @@ func (i *GetShortcutInteractor) GetShortcut(_ context.Context, _ *usecase.GetSho
 	}, nil
 }
 
-//CreateShortcutInteractor is stub implementation for usecase.CreateShortcutInteractor
+//CreateShortcutInteractor is stub implementation for usecase.CreateShortcutBoundary
 type CreateShortcutInteractor struct{}
 
-func NewCreateShortcutInteractor() usecase.CreateShortcutInteractor {
+func NewCreateShortcutInteractor() usecase.CreateShortcutBoundary {
 	return &CreateShortcutInteractor{}
 }
 

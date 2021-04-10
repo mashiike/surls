@@ -41,11 +41,11 @@ func newStubServMux(conf *Config) http.Handler {
 }
 
 func newUsecase(
-	getShortcut usecase.GetShortcutInteractor,
-	createShortcut usecase.CreateShortcutInteractor,
+	getShortcut usecase.GetShortcutBoundary,
+	createShortcut usecase.CreateShortcutBoundary,
 ) *usecase.Usecase {
 	return &usecase.Usecase{
-		GetShortcutInteractor:    getShortcut,
-		CreateShortcutInteractor: createShortcut,
+		GetShortcutBoundary:    getShortcut,
+		CreateShortcutBoundary: createShortcut,
 	}
 }
