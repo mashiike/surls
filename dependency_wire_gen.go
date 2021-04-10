@@ -18,7 +18,8 @@ import (
 func newStubServMux(conf *Config) http.Handler {
 	config := getControllerConfig(conf)
 	getShortcutInteractor := stub.NewGetShortcutInteractor()
-	usecase := newUsecase(getShortcutInteractor)
+	createShortcutInteractor := stub.NewCreateShortcutInteractor()
+	usecase := newUsecase(getShortcutInteractor, createShortcutInteractor)
 	handler := controller.NewServeMux(config, usecase)
 	return handler
 }
@@ -38,7 +39,7 @@ var commonSet = wire.NewSet(controller.NewServeMux, getControllerConfig,
 )
 
 var stubSet = wire.NewSet(
-	commonSet, stub.NewGetShortcutInteractor,
+	commonSet, stub.NewGetShortcutInteractor, stub.NewCreateShortcutInteractor,
 )
 
 func getControllerConfig(conf *Config) *controller.Config {
@@ -47,8 +48,10 @@ func getControllerConfig(conf *Config) *controller.Config {
 
 func newUsecase(
 	getShortcut usecase.GetShortcutInteractor,
+	createShortcut usecase.CreateShortcutInteractor,
 ) *usecase.Usecase {
 	return &usecase.Usecase{
-		GetShortcutInteractor: getShortcut,
+		GetShortcutInteractor:    getShortcut,
+		CreateShortcutInteractor: createShortcut,
 	}
 }

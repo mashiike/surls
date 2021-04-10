@@ -28,6 +28,7 @@ var commonSet = wire.NewSet(
 var stubSet = wire.NewSet(
 	commonSet,
 	stub.NewGetShortcutInteractor,
+	stub.NewCreateShortcutInteractor,
 )
 
 func getControllerConfig(conf *Config) *controller.Config {
@@ -41,8 +42,10 @@ func newStubServMux(conf *Config) http.Handler {
 
 func newUsecase(
 	getShortcut usecase.GetShortcutInteractor,
+	createShortcut usecase.CreateShortcutInteractor,
 ) *usecase.Usecase {
 	return &usecase.Usecase{
-		GetShortcutInteractor: getShortcut,
+		GetShortcutInteractor:    getShortcut,
+		CreateShortcutInteractor: createShortcut,
 	}
 }
