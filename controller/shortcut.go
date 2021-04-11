@@ -15,7 +15,7 @@ type ShortcutController struct {
 }
 
 //NewShortcutController constructs ShortcutController with Usecase
-func newShortcutController(u *usecase.Usecase) *ShortcutController {
+func NewShortcutController(u *usecase.Usecase) *ShortcutController {
 	c := &ShortcutController{
 		u: u,
 	}

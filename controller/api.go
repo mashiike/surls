@@ -16,7 +16,7 @@ type APIController struct {
 }
 
 //newAPIController constructs APIController with Usecase
-func newAPIController(u *usecase.Usecase) *APIController {
+func NewAPIController(u *usecase.Usecase) *APIController {
 	c := &APIController{
 		u: u,
 	}

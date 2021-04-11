@@ -2,9 +2,16 @@ package stub
 
 import (
 	"context"
+	"errors"
 	"net/url"
 
 	"github.com/mashiike/surls/usecase"
+)
+
+//Sutb Dummy Data Const
+const (
+	DummyShortcutID = "xxxxxx"
+	FaildLongURL    = "https://example.org/failed"
 )
 
 //GetShortcutInteractor is stub implementation for usecase.GetShortcutInteractor
@@ -32,6 +39,9 @@ func NewCreateShortcutInteractor() usecase.CreateShortcutBoundary {
 }
 
 func (i *CreateShortcutInteractor) CreateShortcut(_ context.Context, input *usecase.CreateShortcutInput) (*usecase.CreateShortcutOutput, error) {
+	if input.LongURL == FaildLongURL {
+		return nil, errors.New("stub failed url")
+	}
 	u, err := url.Parse(input.LongURL)
 	if err != nil {
 		return nil, err
