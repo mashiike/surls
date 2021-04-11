@@ -9,6 +9,7 @@ import (
 	"github.com/google/wire"
 	"github.com/mashiike/surls/controller"
 	"github.com/mashiike/surls/entity"
+	"github.com/mashiike/surls/gateway/inmem"
 	"github.com/mashiike/surls/usecase"
 	"github.com/mashiike/surls/usecase/stub"
 )
@@ -19,6 +20,7 @@ var commonSet = wire.NewSet(
 	getEntityConfig,
 	entity.NewFactory,
 	newUsecase,
+	newShortcutRepository,
 )
 var stubSet = wire.NewSet(
 	commonSet,
@@ -65,4 +67,12 @@ func newUsecase(
 		GetShortcutBoundary:    getShortcut,
 		CreateShortcutBoundary: createShortcut,
 	}
+}
+
+func newShortcutRepository(conf *Config) usecase.ShortcutRepository {
+	switch conf.Gateway {
+	case Inmem:
+		return inmem.NewShortcutRepository()
+	}
+	return nil
 }

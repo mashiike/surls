@@ -9,6 +9,7 @@ import (
 	"github.com/google/wire"
 	"github.com/mashiike/surls/controller"
 	"github.com/mashiike/surls/entity"
+	"github.com/mashiike/surls/gateway/inmem"
 	"github.com/mashiike/surls/usecase"
 	"github.com/mashiike/surls/usecase/stub"
 	"net/http"
@@ -30,7 +31,8 @@ func newProdServeMux(conf *Config) http.Handler {
 	getShortcutBoundary := stub.NewGetShortcutInteractor()
 	entityConfig := getEntityConfig(conf)
 	factory := entity.NewFactory(entityConfig)
-	createShortcutBoundary := usecase.NewCreateShortcutInteractor(factory)
+	shortcutRepository := newShortcutRepository(conf)
+	createShortcutBoundary := usecase.NewCreateShortcutInteractor(factory, shortcutRepository)
 	usecaseUsecase := newUsecase(getShortcutBoundary, createShortcutBoundary)
 	handler := controller.NewServeMux(config, usecaseUsecase)
 	return handler
@@ -40,6 +42,7 @@ func newProdServeMux(conf *Config) http.Handler {
 
 var commonSet = wire.NewSet(controller.NewServeMux, getControllerConfig,
 	getEntityConfig, entity.NewFactory, newUsecase,
+	newShortcutRepository,
 )
 
 var stubSet = wire.NewSet(
@@ -73,4 +76,12 @@ func newUsecase(
 		GetShortcutBoundary:    getShortcut,
 		CreateShortcutBoundary: createShortcut,
 	}
+}
+
+func newShortcutRepository(conf *Config) usecase.ShortcutRepository {
+	switch conf.Gateway {
+	case Inmem:
+		return inmem.NewShortcutRepository()
+	}
+	return nil
 }

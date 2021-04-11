@@ -6,24 +6,28 @@ import (
 )
 
 type JSONResponseWriter struct {
-	http.ResponseWriter
+	internal http.ResponseWriter
 }
 
 func newJSONResponseWriter(w http.ResponseWriter) JSONResponseWriter {
-	return JSONResponseWriter{ResponseWriter: w}
+	return JSONResponseWriter{internal: w}
 }
 
 func (w JSONResponseWriter) Header() http.Header {
-	return w.ResponseWriter.Header()
+	return w.internal.Header()
 }
 
 func (w JSONResponseWriter) WriteHeader(statusCode int) {
 	w.Header().Add("Content-Type", "application/json")
-	w.ResponseWriter.WriteHeader(statusCode)
+	w.internal.WriteHeader(statusCode)
+}
+
+func (w JSONResponseWriter) Write(bs []byte) (int, error) {
+	return w.Write(bs)
 }
 
 func (w JSONResponseWriter) WriteBody(body interface{}) error {
-	return json.NewEncoder(w.ResponseWriter).Encode(body)
+	return json.NewEncoder(w.internal).Encode(body)
 }
 
 func (w JSONResponseWriter) WriteError(statusCode int, err error) error {

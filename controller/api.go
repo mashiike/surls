@@ -45,8 +45,6 @@ func (c *APIController) CreateShortcut(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	jw.WriteHeader(http.StatusOK)
-	jw.Header().Add("Content-Type", "application/json")
-	jw.WriteHeader(http.StatusOK)
 	jw.WriteBody(map[string]interface{}{
 		"shortcut_id": output.ShortcutID,
 		"long_url":    output.LongURL,
