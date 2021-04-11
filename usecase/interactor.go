@@ -30,7 +30,7 @@ func (i *GetShortcutInteractor) GetShortcut(ctx context.Context, input *GetShort
 		return nil, fmt.Errorf("Find Shortcut failed %w", err)
 	}
 	output := &GetShortcutOutput{
-		RedirectURL: shortcut.LongURL(),
+		RedirectURL: shortcut.LongURL().String(),
 	}
 	return output, nil
 }

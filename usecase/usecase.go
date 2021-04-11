@@ -2,7 +2,6 @@ package usecase
 
 import (
 	"context"
-	"net/url"
 
 	"github.com/mashiike/surls/entity"
 )
@@ -25,7 +24,7 @@ type GetShortcutInput struct {
 
 //GetShortcutInput is OutputData for GetShortcutBoundary
 type GetShortcutOutput struct {
-	RedirectURL *url.URL
+	RedirectURL string
 }
 
 //CreateShortcutBoundary is Boundary of CreateShortcut

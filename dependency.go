@@ -30,7 +30,7 @@ var stubSet = wire.NewSet(
 
 var prodSet = wire.NewSet(
 	commonSet,
-	stub.NewGetShortcutInteractor,
+	usecase.NewGetShortcutInteractor,
 	usecase.NewCreateShortcutInteractor,
 )
 

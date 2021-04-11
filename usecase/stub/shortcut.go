@@ -13,6 +13,7 @@ import (
 const (
 	DummyShortcutID = "xxxxxx"
 	FaildLongURL    = "https://example.org/failed"
+	DummyLongURL    = "https://example.org"
 )
 
 //GetShortcutInteractor is stub implementation for usecase.GetShortcutInteractor
@@ -23,12 +24,8 @@ func NewGetShortcutInteractor() usecase.GetShortcutBoundary {
 }
 
 func (i *GetShortcutInteractor) GetShortcut(_ context.Context, _ *usecase.GetShortcutInput) (*usecase.GetShortcutOutput, error) {
-	u, err := url.Parse("https://example.org")
-	if err != nil {
-		return nil, err
-	}
 	return &usecase.GetShortcutOutput{
-		RedirectURL: u,
+		RedirectURL: DummyLongURL,
 	}, nil
 }
 

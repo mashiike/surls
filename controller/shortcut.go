@@ -48,5 +48,5 @@ func (c *ShortcutController) GetShortcut(w http.ResponseWriter, r *http.Request)
 		fmt.Fprintf(w, "%d %s\n", http.StatusInternalServerError, http.StatusText(http.StatusInternalServerError))
 		return
 	}
-	http.Redirect(w, r, output.RedirectURL.String(), 301)
+	http.Redirect(w, r, output.RedirectURL, 301)
 }
