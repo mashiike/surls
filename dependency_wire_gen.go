@@ -17,9 +17,9 @@ import (
 
 func newStubServMux(conf *Config) http.Handler {
 	config := getControllerConfig(conf)
-	getShortcutInteractor := stub.NewGetShortcutInteractor()
-	createShortcutInteractor := stub.NewCreateShortcutInteractor()
-	usecase := newUsecase(getShortcutInteractor, createShortcutInteractor)
+	getShortcutBoundary := stub.NewGetShortcutInteractor()
+	createShortcutBoundary := stub.NewCreateShortcutInteractor()
+	usecase := newUsecase(getShortcutBoundary, createShortcutBoundary)
 	handler := controller.NewServeMux(config, usecase)
 	return handler
 }
@@ -47,11 +47,11 @@ func getControllerConfig(conf *Config) *controller.Config {
 }
 
 func newUsecase(
-	getShortcut usecase.GetShortcutInteractor,
-	createShortcut usecase.CreateShortcutInteractor,
+	getShortcut usecase.GetShortcutBoundary,
+	createShortcut usecase.CreateShortcutBoundary,
 ) *usecase.Usecase {
 	return &usecase.Usecase{
-		GetShortcutInteractor:    getShortcut,
-		CreateShortcutInteractor: createShortcut,
+		GetShortcutBoundary:    getShortcut,
+		CreateShortcutBoundary: createShortcut,
 	}
 }

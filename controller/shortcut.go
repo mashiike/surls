@@ -24,6 +24,11 @@ func newShortcutController(u *usecase.Usecase) *ShortcutController {
 
 func (c *ShortcutController) RegisterRoute(r *mux.Router) {
 	r.HandleFunc("/{shortcut_id:.+}", c.GetShortcut).Methods("GET")
+	r.HandleFunc("/*", c.CatchAll)
+}
+
+func (c *ShortcutController) CatchAll(w http.ResponseWriter, r *http.Request) {
+	http.NotFound(w, r)
 }
 
 func (c *ShortcutController) GetShortcut(w http.ResponseWriter, r *http.Request) {
