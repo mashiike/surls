@@ -10,7 +10,7 @@ type Config struct {
 
 func NewDefaultConfig() *Config {
 	return &Config{
-		UseStub: true,
+		UseStub: false,
 		Route:   controller.NewDefaultConfig(),
 	}
 }

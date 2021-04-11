@@ -12,14 +12,6 @@ import (
 	"github.com/mashiike/surls/usecase/stub"
 )
 
-func NewServeMux(config *Config) http.Handler {
-	switch {
-	case config.UseStub:
-		return newStubServMux(config)
-	}
-	return nil
-}
-
 var commonSet = wire.NewSet(
 	controller.NewServeMux,
 	getControllerConfig,
@@ -31,12 +23,30 @@ var stubSet = wire.NewSet(
 	stub.NewCreateShortcutInteractor,
 )
 
+var prodSet = wire.NewSet(
+	commonSet,
+	stub.NewGetShortcutInteractor,
+	usecase.NewCreateShortcutInteractor,
+)
+
+func NewServeMux(config *Config) http.Handler {
+	if config.UseStub {
+		return newStubServeMux(config)
+	}
+	return newProdServeMux(config)
+}
+
 func getControllerConfig(conf *Config) *controller.Config {
 	return conf.Route
 }
 
-func newStubServMux(conf *Config) http.Handler {
+func newStubServeMux(conf *Config) http.Handler {
 	wire.Build(stubSet)
+	return nil
+}
+
+func newProdServeMux(conf *Config) http.Handler {
+	wire.Build(prodSet)
 	return nil
 }
 

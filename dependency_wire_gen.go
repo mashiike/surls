@@ -15,7 +15,7 @@ import (
 
 // Injectors from dependency.go:
 
-func newStubServMux(conf *Config) http.Handler {
+func newStubServeMux(conf *Config) http.Handler {
 	config := getControllerConfig(conf)
 	getShortcutBoundary := stub.NewGetShortcutInteractor()
 	createShortcutBoundary := stub.NewCreateShortcutInteractor()
@@ -24,15 +24,16 @@ func newStubServMux(conf *Config) http.Handler {
 	return handler
 }
 
-// dependency.go:
-
-func NewServeMux(config *Config) http.Handler {
-	switch {
-	case config.UseStub:
-		return newStubServMux(config)
-	}
-	return nil
+func newProdServeMux(conf *Config) http.Handler {
+	config := getControllerConfig(conf)
+	getShortcutBoundary := stub.NewGetShortcutInteractor()
+	createShortcutBoundary := usecase.NewCreateShortcutInteractor()
+	usecaseUsecase := newUsecase(getShortcutBoundary, createShortcutBoundary)
+	handler := controller.NewServeMux(config, usecaseUsecase)
+	return handler
 }
+
+// dependency.go:
 
 var commonSet = wire.NewSet(controller.NewServeMux, getControllerConfig,
 	newUsecase,
@@ -41,6 +42,17 @@ var commonSet = wire.NewSet(controller.NewServeMux, getControllerConfig,
 var stubSet = wire.NewSet(
 	commonSet, stub.NewGetShortcutInteractor, stub.NewCreateShortcutInteractor,
 )
+
+var prodSet = wire.NewSet(
+	commonSet, stub.NewGetShortcutInteractor, usecase.NewCreateShortcutInteractor,
+)
+
+func NewServeMux(config *Config) http.Handler {
+	if config.UseStub {
+		return newStubServeMux(config)
+	}
+	return newProdServeMux(config)
+}
 
 func getControllerConfig(conf *Config) *controller.Config {
 	return conf.Route
