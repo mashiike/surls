@@ -9,18 +9,24 @@ import (
 )
 
 type ShortcutRepository struct {
+	store map[entity.ShortcutID]*entity.Shortcut
 }
 
 func NewShortcutRepository() usecase.ShortcutRepository {
-	return &ShortcutRepository{}
+	return &ShortcutRepository{
+		store: make(map[entity.ShortcutID]*entity.Shortcut),
+	}
 }
 
 func (repo *ShortcutRepository) Save(_ context.Context, shortcut *entity.Shortcut) error {
-	//Noop
+	repo.store[shortcut.ID()] = shortcut
 	return nil
 }
 
 func (repo *ShortcutRepository) Find(_ context.Context, id entity.ShortcutID) (*entity.Shortcut, error) {
-	//Noop
-	return nil, errors.New("not implement yet")
+	shortcut, ok := repo.store[id]
+	if !ok {
+		return nil, errors.New("not found")
+	}
+	return shortcut, nil
 }
