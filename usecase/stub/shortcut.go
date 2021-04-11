@@ -5,6 +5,7 @@ import (
 	"errors"
 	"net/url"
 
+	"github.com/mashiike/surls/entity"
 	"github.com/mashiike/surls/usecase"
 )
 
@@ -47,7 +48,7 @@ func (i *CreateShortcutInteractor) CreateShortcut(_ context.Context, input *usec
 		return nil, err
 	}
 	return &usecase.CreateShortcutOutput{
-		ShortcutID: "xxxxxx",
+		ShortcutID: entity.ShortcutID(DummyShortcutID),
 		LongURL:    u.String(),
 	}, nil
 }

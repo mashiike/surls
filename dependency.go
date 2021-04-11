@@ -8,6 +8,7 @@ import (
 
 	"github.com/google/wire"
 	"github.com/mashiike/surls/controller"
+	"github.com/mashiike/surls/entity"
 	"github.com/mashiike/surls/usecase"
 	"github.com/mashiike/surls/usecase/stub"
 )
@@ -15,6 +16,8 @@ import (
 var commonSet = wire.NewSet(
 	controller.NewServeMux,
 	getControllerConfig,
+	getEntityConfig,
+	entity.NewFactory,
 	newUsecase,
 )
 var stubSet = wire.NewSet(
@@ -38,6 +41,10 @@ func NewServeMux(config *Config) http.Handler {
 
 func getControllerConfig(conf *Config) *controller.Config {
 	return conf.Route
+}
+
+func getEntityConfig(conf *Config) *entity.Config {
+	return conf.Core
 }
 
 func newStubServeMux(conf *Config) http.Handler {

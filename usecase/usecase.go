@@ -3,6 +3,8 @@ package usecase
 import (
 	"context"
 	"net/url"
+
+	"github.com/mashiike/surls/entity"
 )
 
 //Usecase is is a container for Boundarys
@@ -38,6 +40,6 @@ type CreateShortcutInput struct {
 
 //CreateShortcutInput is OutputData for CreateShortcutBoundary
 type CreateShortcutOutput struct {
-	ShortcutID string
+	ShortcutID entity.ShortcutID
 	LongURL    string
 }
