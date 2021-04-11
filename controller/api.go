@@ -24,7 +24,6 @@ func NewAPIController(u *usecase.Usecase) *APIController {
 }
 
 func (c *APIController) RegisterRoute(r *mux.Router) {
-	r.Headers("Content-Type", "application/json")
 	r.HandleFunc("/urls", c.CreateShortcut).Methods("POST")
 	r.HandleFunc("/*", c.CatchAll)
 }
