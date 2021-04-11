@@ -28,10 +28,10 @@ func newStubServeMux(conf *Config) http.Handler {
 
 func newProdServeMux(conf *Config) http.Handler {
 	config := getControllerConfig(conf)
-	getShortcutBoundary := stub.NewGetShortcutInteractor()
 	entityConfig := getEntityConfig(conf)
 	factory := entity.NewFactory(entityConfig)
 	shortcutRepository := newShortcutRepository(conf)
+	getShortcutBoundary := usecase.NewGetShortcutInteractor(factory, shortcutRepository)
 	createShortcutBoundary := usecase.NewCreateShortcutInteractor(factory, shortcutRepository)
 	usecaseUsecase := newUsecase(getShortcutBoundary, createShortcutBoundary)
 	handler := controller.NewServeMux(config, usecaseUsecase)
@@ -50,7 +50,7 @@ var stubSet = wire.NewSet(
 )
 
 var prodSet = wire.NewSet(
-	commonSet, stub.NewGetShortcutInteractor, usecase.NewCreateShortcutInteractor,
+	commonSet, usecase.NewGetShortcutInteractor, usecase.NewCreateShortcutInteractor,
 )
 
 func NewServeMux(config *Config) http.Handler {

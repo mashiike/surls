@@ -22,6 +22,10 @@ func (f *Factory) newShortcutID() (ShortcutID, error) {
 	return ShortcutID(f.shortcutIDGenerator.Generate(f.conf.MinimumLength)), nil
 }
 
+func (f *Factory) NewShortcutID(idstr string) (ShortcutID, error) {
+	return ShortcutID(idstr), nil
+}
+
 func (f *Factory) NewShortcut(longURL *url.URL) (*Shortcut, error) {
 	id, err := f.newShortcutID()
 	if err != nil {

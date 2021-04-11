@@ -8,6 +8,33 @@ import (
 	"github.com/mashiike/surls/entity"
 )
 
+type GetShortcutInteractor struct {
+	factory *entity.Factory
+	repo    ShortcutRepository
+}
+
+func NewGetShortcutInteractor(f *entity.Factory, repo ShortcutRepository) GetShortcutBoundary {
+	return &GetShortcutInteractor{
+		factory: f,
+		repo:    repo,
+	}
+}
+
+func (i *GetShortcutInteractor) GetShortcut(ctx context.Context, input *GetShortcutInput) (*GetShortcutOutput, error) {
+	id, err := i.factory.NewShortcutID(input.ShortcutID)
+	if err != nil {
+		return nil, fmt.Errorf("ShortcutID is invalid %w", err)
+	}
+	shortcut, err := i.repo.Find(ctx, id)
+	if err != nil {
+		return nil, fmt.Errorf("Find Shortcut failed %w", err)
+	}
+	output := &GetShortcutOutput{
+		RedirectURL: shortcut.LongURL(),
+	}
+	return output, nil
+}
+
 type CreateShortcutInteractor struct {
 	factory *entity.Factory
 	repo    ShortcutRepository
